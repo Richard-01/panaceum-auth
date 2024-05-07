@@ -8,26 +8,17 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class UserSignUpDto {
+export class UserLogInDto {
   @ApiProperty()
   @IsEmail()
+  @IsString()
   @IsNotEmpty()
   @Transform(({ value }) => value.toLowerCase())
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'password should be', minimum: 8, maximum: 70 })
   @IsNotEmpty()
-  @IsString()
-  username: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @MinLength(8, { message: 'password should be minimmum 8' })
-  @MaxLength(50, { message: 'password should be maximium 70' })
+  @MinLength(8, { message: 'password should be minimmum 8 ' })
+  @MaxLength(50, { message: 'password should be maximium 70 ' })
   password: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  role: string;
 }
