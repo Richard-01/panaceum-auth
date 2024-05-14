@@ -9,6 +9,7 @@ import {
     Matches,
 } from 'class-validator';
 import { Document } from 'mongoose';
+import { UserRole } from '../constants/interfaces/roles-users.enum';
 
 
 @Schema({ timestamps: true })
@@ -50,6 +51,11 @@ export class User extends Document {
         message: 'Password too weak. It must contain at least one lowercase letter, one uppercase letter, one number, and be at least 8 characters long.',
     })
     password: string;
+
+    @Prop({ default: UserRole.PATIENT })
+    @IsNotEmpty()
+    @IsString()
+    role: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

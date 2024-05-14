@@ -7,10 +7,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { SignUpDto, UserLoginDto } from '../dtos/common';
+import { SignUpDto, UserLoginDto } from '../dtos/common/user-index';
 import { AtGuard } from '../guards/at.guard';
 import { IsPublic } from '../../decorators/public.decorator';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth.service.service';
 
 @IsPublic()
 @ApiTags('Authentication')
