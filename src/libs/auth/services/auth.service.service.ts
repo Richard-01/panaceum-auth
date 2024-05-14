@@ -1,9 +1,9 @@
 import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { HashService } from '../../utils/services/hash.service';
-import { SignUpDto, UserLoginDto } from '../dtos/common';
 import { JwtPayload, Tokens } from '../types';
-import { UserService } from 'src/modules/users/services/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from 'src/modules/users/services/user.service';
+import { SignUpDto, UserLoginDto } from '../dtos/common/user-index';
+import { HashService } from '../../utils/services/hash.service';
 
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async logIn(userLogInDto: UserLoginDto) {
-    const user = await this.userService.findOneByEmail(userLogInDto.email);
+    const user = await this.userService.findUserByEmail(userLogInDto.email);
     if (!user) {
       throw new BadRequestException('User not found');
     }
@@ -30,6 +30,7 @@ export class AuthService {
 
     return await this.getTokens({
       sub: user.id,
+      fullName: user.fullName,
     });
   }
 
@@ -38,15 +39,15 @@ export class AuthService {
 
     const hashedPassword = await this.hashService.hash(userRegister.password);
 
-    const user = await this.userService.create({
+   const user = await this.userService.create({
       email: userRegister.email,
-      username: userRegister.username,
+      fullName: userRegister.fullName,
       password: hashedPassword,
-      role: userRegister.role,
-    });
+   });
 
     return await this.getTokens({
       sub: user.id,
+      fullName: user.fullName,
     });
   }
 
@@ -76,7 +77,7 @@ export class AuthService {
   }
 
   async validateEmailForSignUp(email: string): Promise<boolean | undefined> {
-    const user = await this.userService.findOneByEmailRegister(email);
+    const user = await this.userService.findUserByEmail(email);
 
     if (user) {
       throw new HttpException('Email already exists!', 400);
