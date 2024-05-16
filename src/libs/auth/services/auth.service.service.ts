@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   async logIn(userLogInDto: UserLoginDto) {
-    const user = await this.userService.findUserByEmail(userLogInDto.email);
+    const user = await this.userService.findOneByEmail(userLogInDto.email);
     if (!user) {
       throw new BadRequestException('User not found');
     }
@@ -43,6 +43,10 @@ export class AuthService {
       email: userRegister.email,
       fullName: userRegister.fullName,
       password: hashedPassword,
+      role: userRegister.role,
+      typeId: userRegister.typeId,
+      Id: userRegister.Id,
+      dateOfBirth: userRegister.dateOfBirth,
    });
 
     return await this.getTokens({
@@ -77,7 +81,7 @@ export class AuthService {
   }
 
   async validateEmailForSignUp(email: string): Promise<boolean | undefined> {
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.findOneByEmailRegister(email);
 
     if (user) {
       throw new HttpException('Email already exists!', 400);

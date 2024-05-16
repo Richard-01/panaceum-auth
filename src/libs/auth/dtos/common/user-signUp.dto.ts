@@ -1,11 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
-  IsDate,
   IsEmail,
   IsNotEmpty,
   IsString,
-  Length,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -32,4 +30,19 @@ export class SignUpDto {
   @ApiProperty({ description: 'User role', example: 'ADMIN' })
   @IsNotEmpty()
   role: string;
+
+  @ApiProperty({ description: 'Date of birth of the user', example: '1990-01-14' })
+  @IsNotEmpty()
+  @IsString()
+  dateOfBirth: string;
+  
+  @ApiProperty({ description: 'Type of identification', example: 'Passport' })
+  @IsNotEmpty()
+  @IsString()
+  typeId: string;
+  
+  @ApiProperty({ description: 'Identification number', example: '123456789' })
+  @IsNotEmpty()
+  @IsString()
+  readonly Id: string;
 }

@@ -36,15 +36,19 @@ export class UserService {
         return user;
     }
 
-    async findUserByEmail(email: string, forRegistration: boolean = false): Promise<User> {
-        const user = await this.userModel.findOne({ email });
-        
-        if ((forRegistration && user) || (!forRegistration && !user)) {
-            throw forRegistration
-                ? new ConflictException(`User with email ${email} already exists`)
-                : new NotFoundException(`User with email ${email} not found`);
+    async findOneByEmail(email: string): Promise<User> {
+        const user = await this.userModel.findOne({ email }).exec();
+        if (!user) {
+          throw new NotFoundException(`User with email ${email} not found`);
         }
-        
+        return user;
+    }
+
+    async findOneByEmailRegister(email: string): Promise<User> {
+        const user = await this.userModel.findOne({ email });
+        if (user) {
+          throw new NotFoundException(`User with email ${email} already exists`);
+        }
         return user;
     }
 
