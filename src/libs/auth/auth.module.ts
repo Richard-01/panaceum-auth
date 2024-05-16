@@ -15,6 +15,6 @@ import { HashService } from '../utils/services/hash.service';
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, HashService],
+  providers: [AuthService, JwtStrategy,HashService ],
 })
 export class AuthModule {}

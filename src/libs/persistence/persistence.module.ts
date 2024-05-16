@@ -11,8 +11,8 @@ import dbConfig from './db-config';
         const { db, env } = configService;
         const uriDb =
           env === "local"
-            ? `${db.connection}${db.host}/${db.name}`
-            : `${db.connection}${db.user}:${db.password}@${db.host}/${db.name}`;
+          ? `${db.connection}${db.user}:${db.password}@${db.host}/${db.name}`
+          : `${db.connection}${db.host}/${db.name}`;
         return {
           uri: uriDb,
         };
