@@ -21,7 +21,7 @@ export class SignUpDto {
   @IsString()
   fullName: string;
 
-  @ApiProperty({ description: 'User password', example: 'Password123' })
+  @ApiProperty({ description: 'User password', example: 'Password123*s' })
   @IsNotEmpty()
   @MinLength(8, { message: 'password should be minimmum 8' })
   @MaxLength(50, { message: 'password should be maximium 50' })
@@ -41,7 +41,7 @@ export class SignUpDto {
   @IsString()
   typeId: string;
   
-  @ApiProperty({ description: 'Identification number', example: '123456789' })
+  @ApiProperty({ description: 'Identification number,ID must be unique', example: '123456789' })
   @IsNotEmpty()
   @IsString()
   readonly Id: string;

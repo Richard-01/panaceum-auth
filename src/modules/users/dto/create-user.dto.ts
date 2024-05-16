@@ -12,12 +12,12 @@ export class CreateUserDto {
     @ApiProperty({ description: 'Type of identification', example: 'Passport' })
     @IsNotEmpty()
     @IsString()
-    typeId?: string;
+    typeId: string;
 
     @ApiProperty({ description: 'Identification number', example: '12345678' })
     @IsNotEmpty()
     @IsString()
-    Id?: string;
+    Id: string;
 
     @ApiProperty({ description: 'Email address of the user', example: 'john@example.com' })
     @IsEmail()
@@ -27,7 +27,7 @@ export class CreateUserDto {
     @ApiProperty({ description: 'Date of birth of the user', example: '1990-01-01' })
     @IsDate()
     @IsNotEmpty()
-    dateOfBirth?: string;
+    dateOfBirth: string;
 
     @ApiProperty({ description: 'User password', example: 'Password123' })
     @IsNotEmpty()
