@@ -28,8 +28,7 @@ export class SignUpDto {
   password: string;
 
   @ApiProperty({ description: 'User role', example: 'ADMIN' })
-  @IsNotEmpty()
-  role: string;
+  role?: string;
 
   @ApiProperty({ description: 'Date of birth of the user', example: '1990-01-14' })
   @IsNotEmpty()

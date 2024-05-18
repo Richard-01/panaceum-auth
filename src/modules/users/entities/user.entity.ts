@@ -55,7 +55,7 @@ export class User extends Document {
     @Prop({ default: UserRole.PATIENT })
     @IsNotEmpty()
     @IsString()
-    role: UserRole;
+    role?: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
