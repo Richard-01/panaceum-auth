@@ -1,4 +1,9 @@
 export type JwtPayload = {
-  sub: number;
-  fullName: string;
+  id: string,
+  typeId: string,
+  email: string,
+  fullName: string,
+  password: string,
+  role: string,
+  dateOfBirth: Date,
 };

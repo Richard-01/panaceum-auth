@@ -1,12 +1,15 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   Post,
   UseGuards,
+  Headers
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SignUpDto, UserLoginDto } from '../dtos/common/user-index';
 import { AtGuard } from '../guards/at.guard';
 import { IsPublic } from '../../decorators/public.decorator';
@@ -44,11 +47,16 @@ export class AuthController {
   /* 
   This method handles POST /auth/check requests. It's decorated with @UseGuards(AtGuard), meaning it requires authentication. It doesn't take any input and simply returns true. This could be used to check if the client's access token is valid.
   */
-  @Post('check')
+  @ApiOperation({ summary: 'Verificar token' })
+  @Get('check')
   @UseGuards(AtGuard)
-  @ApiBearerAuth()
-  @HttpCode(HttpStatus.OK)
-  async check() {
-    return true;
+  async check(@Headers('Authorization') authHeader: string) {
+    try {
+      const token = authHeader.replace('Bearer ', '');
+      return await this.authService.check(token);
+    } catch (error) {
+      console.error('Error in token verification:', error);
+      throw new InternalServerErrorException('Failed to verify token');
+    }
   }
 }
