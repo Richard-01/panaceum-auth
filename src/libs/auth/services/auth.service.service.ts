@@ -1,9 +1,9 @@
 import { BadRequestException, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtPayload, Tokens } from '../types';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/modules/users/services/user.service';
-import { SignUpDto, UserLoginDto } from '../dtos/common/user-index';
 import { HashService } from '../../utils/services/hash.service';
+import { SignUpDto, UserLoginDto } from '../dtos/common/user-index';
+import { JwtPayload, Tokens } from '../types';
 
 @Injectable()
 export class AuthService {
@@ -27,13 +27,10 @@ export class AuthService {
       throw new BadRequestException('Incorrect password');
     }
 
-    // Obtener el token y el payload
-    const { access_token, payload } = await this.getTokens({
+    return await this.getTokens({
       sub: user.id,
       fullName: user.fullName,
     });
-
-    return { access_token, payload };
   }
 
   async register(userRegister: SignUpDto): Promise<Tokens> {
@@ -51,13 +48,10 @@ export class AuthService {
       dateOfBirth: userRegister.dateOfBirth,
     });
 
-    // Obtener el token y el payload
-    const { access_token, payload } = await this.getTokens({
+    return await this.getTokens({
       sub: user.id,
       fullName: user.fullName,
     });
-
-    return { access_token, payload };
   }
 
   async check(token: string): Promise<any> {
@@ -70,22 +64,19 @@ export class AuthService {
         throw new UnauthorizedException('User not found');
       }
 
-      // Obtener el token y el payload
-      const { access_token, payload: userPayload } = await this.getTokens({
-        id: user.id,
-        typeId: user.typeId,
-        email: user.email,
-        fullName: user.fullName,
-        password: user.password, // Considera no devolver la contraseña en producción
-        role: user.role,
-        dateOfBirth: user.dateOfBirth,
-      });
-
       // Incluir los datos adicionales en la respuesta
       return {
         valid: true,
-        access_token,
-        payload: userPayload
+        
+        payload: {
+          id: user.id,
+          typeId: user.typeId,
+          email: user.email,
+          fullName: user.fullName,
+          password: user.password, // Considera no devolver la contraseña en producción
+          role: user.role,
+          dateOfBirth: user.dateOfBirth,
+        }
       };
     } catch (error) {
       console.error('Error verifying token:', error.message || error);
@@ -93,34 +84,23 @@ export class AuthService {
     }
   }
 
-async getTokens(user: any): Promise<Tokens> {
+  async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
-        throw new Error('JWT_SECRET is not set');
+      throw new Error('JWT_SECRET is not set');
     }
     const accessTokenOptions = {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m',
-    };
-
-    const payload = {
-        id: user.id,
-        typeId: user.typeId,
-        email: user.email,
-        fullName: user.fullName,
-        password: user.password, // Considera no devolver la contraseña en producción
-        role: user.role,
-        dateOfBirth: user.dateOfBirth,
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m',
     };
 
     const accessToken = await this.signToken(
-        payload,
-        secretKey,
-        accessTokenOptions,
+      jwtPayload,
+      secretKey,
+      accessTokenOptions,
     );
 
-    return { access_token: accessToken, payload };
-}
-
+    return { access_token: accessToken };
+  }
 
   async signToken(payload: JwtPayload, secretKey: string, options: any) {
     return await this.jwtService.signAsync(payload, {
