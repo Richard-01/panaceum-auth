@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "95c7976d-0ba3-4d04-b8cb-681097919fd6",
+		"name": "panaceum",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33426427",
+		"_collection_link": "https://gold-comet-398837.postman.co/workspace/My-Workspace~7b131661-a183-459e-887c-e60765e0bb75/collection/33426427-95c7976d-0ba3-4d04-b8cb-681097919fd6?action=share&source=collection_link&creator=33426427"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"miguel123@gmail.com\",\n    \"fullName\" : \"Miguel Tabares Cuadros\",\n    \"password\" : \"123456789\",\n    \"dateOfBirth\": \"1996-02-19\",\n    \"typeId\": \"Cédula de ciudadanía\",\n    \"Id\": \"1128463123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"miguel123@gmail.com\",\n    \"password\" : \"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjRiZTAwYjUzZjcyYTg3MzQ2OTFlMWIiLCJmdWxsTmFtZSI6Ik1pZ3VlbCBUYWJhcmVzIEN1YWRyb3MiLCJpYXQiOjE3MTYyNDg1OTksImV4cCI6MTcxNjI1MjE5OX0.9RJxQ9eHDcMBXkLQ4a4h9ga9_wGLg8W0d-fhoHYnfqM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/check",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"check"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
